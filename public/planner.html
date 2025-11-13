@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Planner — Travel Trends</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <!-- Optional: Leaflet for basic map visualization (no key needed) -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style>
+      /* Minor layout helpers specific to this page */
+      .planner-wrap {
+        max-width: 1080px;
+        margin: 20px auto;
+        padding: 0 16px 24px;
+      }
+      .planner-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 1000px) {
+        .planner-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      #map {
+        width: 100%;
+        height: 360px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      .day-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+        background: #fff;
+      }
+      .slot {
+        padding: 6px 0;
+        border-top: 1px dashed var(--border);
+      }
+      .slot:first-child {
+        border-top: none;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 12px;
+        color: #374151;
+        background: #f3f4f6;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-left: 6px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="planner-wrap">
+      <!-- Header -->
+      <div class="header" style="margin-bottom: 14px">
+        <div class="brand">
+          <div class="dot"></div>
+          <h1 style="margin: 0">Trip Planner</h1>
+        </div>
+        <p class="lead" style="margin: 6px 0 0">
+          Generate a day-by-day plan with weather and nearby places. Use the
+          form, then refine.
+        </p>
+      </div>
+      <div class="planner-grid">
+        <!-- Left: Controls and Results -->
+        <div>
+          <div class="panel" style="margin-bottom: 12px">
+            <h2 style="margin: 0 0 10px">Plan a Trip</h2>
+            <form id="planForm" style="display: grid; gap: 15px">
+              <div class="flex-row" style="gap: 10px">
+                <div class="inputForm" style="flex: 1">
+                  <input
+                    class="input"
+                    id="traveler_type"
+                    placeholder="Couple | Solo | Nuclear Family | Joint Family | Friends"
+                    required
+                  />
+                </div>
+                <div class="inputForm" style="flex: 1">
+                  <input
+                    class="input"
+                    id="destination"
+                    placeholder="e.g., Ooty, Paris, Tokyo"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div class="flex-row" style="gap: 10px">
+                <div class="inputForm" style="flex: 1">
+                  <label for="start_date" style="font-size: 12px; color: var(--muted); margin-bottom: 4px; display: block;">Start Date</label>
+                  <input
+                    class="input"
+                    id="start_date"
+                    type="date"
+                    required
+                  />
+                </div>
+                <div class="inputForm" style="flex: 1">
+                  <label for="end_date" style="font-size: 12px; color: var(--muted); margin-bottom: 4px; display: block;">End Date</label>
+                  <input
+                    class="input"
+                    id="end_date"
+                    type="date"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="flex-row" style="gap: 10px; align-items: center">
+                <label style="font-size: 14px; color: #374151; font-weight: 500">
+                  <input id="use_groq" type="checkbox" checked /> Get AI travel guide & tips
+                </label>
+                <div class="muted" style="font-size: 12px">
+                  Recommended for best experience
+                </div>
+              </div>
+
+              <button class="button-submit" type="submit">Generate</button>
+              <div id="error" class="error"></div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2 style="margin: 0 0 10px">Results</h2>
+            <div id="summary" class="muted" style="margin-bottom: 10px">
+              No plan yet. Submit the form above.
+            </div>
+            <div id="results"></div>
+          </div>
+        </div>
+
+        <!-- Right: Map and Notes -->
+        <div>
+          <div class="panel" style="margin-bottom: 12px">
+            <h2 style="margin: 0 0 10px">Map</h2>
+            <div id="map"></div>
+          </div>
+
+          <div class="panel">
+            <h2 style="margin: 0 0 10px">Your Smart Guide</h2>
+            <div id="llmNotes" class="muted" style="white-space: pre-wrap; line-height: 1.55">
+              Run with “Use Groq to refine notes” to populate this.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          gap: 10px;
+          justify-content: flex-end;
+          margin-top: 10px;
+        "
+      >
+        <a
+          href="/"
+          class="btn"
+          style="
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 14px;
+          "
+          >Back to Home</a
+        >
+        <button id="logout" class="btn" type="button">Log out</button>
+      </div>
+    </div>
+
+    <!-- Optional: Leaflet JS for map -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <script>
+      let map,
+        markers = [];
+
+      function initMap(lat = 20.5937, lng = 78.9629, zoom = 5) {
+        const el = document.getElementById("map");
+        if (!el) return;
+        if (!window.L) return; // Leaflet not loaded
+        if (map) {
+          map.remove();
+          map = null;
+        }
+        map = L.map(el).setView([lat, lng], zoom);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "&copy; OpenStreetMap",
+        }).addTo(map);
+      }
+
+      function clearMarkers() {
+        if (!map) return;
+        markers.forEach((m) => m.remove());
+        markers = [];
+      }
+
+      function addMarker(lat, lng, label) {
+        if (!map || !window.L) return;
+        const m = L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(label || "");
+        markers.push(m);
+      }
+
+      function fitBoundsToPoints(points) {
+        if (!map || !points.length || !window.L) return;
+        const group = L.featureGroup(
+          points.map((p) => L.marker([p.lat, p.lng]))
+        );
+        map.fitBounds(group.getBounds().pad(0.2));
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        initMap(); // initial world view
+        setDefaultDates(); // set default travel dates
+
+        const form = document.getElementById("planForm");
+        const results = document.getElementById("results");
+        const summary = document.getElementById("summary");
+        const errorEl = document.getElementById("error");
+        const llmNotes = document.getElementById("llmNotes");
+
+        function calculateDays(startDate, endDate) {
+          const start = new Date(startDate);
+          const end = new Date(endDate);
+          const diffTime = Math.abs(end - start);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          return diffDays || 1;
+        }
+        
+        function setDefaultDates() {
+          const today = new Date();
+          const tomorrow = new Date(today);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          
+          document.getElementById('start_date').value = today.toISOString().split('T')[0];
+          document.getElementById('end_date').value = tomorrow.toISOString().split('T')[0];
+        }
+
+        async function generatePlan(e) {
+          e.preventDefault();
+          errorEl.textContent = "";
+          
+          // Validate dates
+          const startDate = document.getElementById("start_date").value;
+          const endDate = document.getElementById("end_date").value;
+          
+          if (!startDate || !endDate) {
+            errorEl.textContent = "Please select both start and end dates";
+            return;
+          }
+          
+          if (new Date(endDate) < new Date(startDate)) {
+            errorEl.textContent = "End date must be after start date";
+            return;
+          }
+          
+          const days = calculateDays(startDate, endDate);
+          if (days > 14) {
+            errorEl.textContent = "Maximum trip duration is 14 days";
+            return;
+          }
+          
+          // Add loading states
+          const submitBtn = form.querySelector('.button-submit');
+          const originalBtnText = submitBtn.textContent;
+          submitBtn.textContent = 'Generating Your Perfect Trip...';
+          submitBtn.classList.add('loading');
+          
+          results.innerHTML = `
+              <div class="day-card pulse">
+              <div class="day-card-header">
+                <h3 class="day-card-title">Loading your adventure...</h3>
+                <div class="day-weather">Planning magic</div>
+              </div>
+              <div style="padding: 20px; text-align: center; color: var(--muted);">
+                Discovering amazing places with perfect weather for you...
+              </div>
+            </div>
+          `;
+          
+          summary.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="pulse">Loading...</span>
+              <span>Crafting your ${days}-day personalized itinerary...</span>
+            </div>
+          `;
+          
+          llmNotes.innerHTML = `
+            <div style="text-align: center; padding: 20px; color: var(--muted);">
+              <div class="pulse" style="font-size: 24px; margin-bottom: 12px;">AI</div>
+              <div>Our AI travel expert is preparing detailed recommendations and insider tips for your ${days}-day trip...</div>
+            </div>
+          `;
+
+          const payload = {
+            traveler_type: document.getElementById("traveler_type").value,
+            destination: document.getElementById("destination").value,
+            days: days,
+            start_date: startDate,
+            end_date: endDate,
+            use_groq: document.getElementById("use_groq").checked,
+          };
+
+          try {
+            const r = await fetch("/api/itinerary", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            const data = await r.json();
+            if (!r.ok) throw new Error(data?.error || `HTTP ${r.status}`);
+
+            // Summary
+            summary.innerHTML = `
+          <div>Destination: <strong>${data.destination}</strong></div>
+          <div class="muted">Traveler type: ${data.traveler_type || "—"}</div>
+        `;
+
+            // Map
+            const center = data.latlng || data.latLng || data.center;
+            if (center?.lat && center?.lng) {
+              initMap(center.lat, center.lng, 12);
+            } else {
+              initMap();
+            }
+            clearMarkers();
+
+            // Render days
+            const pts = [];
+            results.innerHTML = (data.plan || [])
+              .map((day, i) => {
+                let weather = "Pleasant weather";
+                if (day.weather) {
+                  const w = day.weather;
+                  const emoji = w.emoji || "";
+                  const temp = w.avg_temp_c ? `${w.avg_temp_c}°C` : "";
+                  const minMax = (w.min_temp_c && w.max_temp_c) ? ` (${w.min_temp_c}°-${w.max_temp_c}°C)` : "";
+                  const humidity = w.humidity ? ` • ${w.humidity}% humidity` : "";
+                  weather = `${emoji} ${w.condition} ${temp}${minMax}${humidity}`;
+                }
+                const cats = (day.categories || [])
+                  .map((c) => `<span class="tag">${c}</span>`)
+                  .join(" ");
+                const slotsHtml = (day.slots || [])
+                  .map((s) => {
+                    if (s.place?.lat && s.place?.lng) {
+                      pts.push({ lat: s.place.lat, lng: s.place.lng });
+                      addMarker(s.place.lat, s.place.lng, s.place.name || "");
+                    }
+                    
+                    const placeName = s.place?.name || "Free exploration";
+                    const categories = s.place?.categories ? s.place.categories.join(", ") : "";
+                    const rating = s.place?.rating ? `<span class="tag">Rating: ${s.place.rating}</span>` : "";
+                    const address = s.place?.address || "";
+                    
+                    // Create Google search URL for the place
+                    const googleSearchUrl = placeName !== "Free exploration" 
+                      ? `https://www.google.com/search?q=${encodeURIComponent(placeName + ' ' + data.destination + ' reviews')}&tbm=lcl`
+                      : null;
+                    
+                    const placeNameHtml = googleSearchUrl 
+                      ? `<span class="place-name clickable" onclick="window.open('${googleSearchUrl}', '_blank')" title="Click to view reviews and details">${placeName}</span>`
+                      : `<span class="place-name">${placeName}</span>`;
+                    
+                    return `
+              <div class="slot">
+                <div>
+                  <strong>${s.part}</strong>
+                  ${placeNameHtml}
+                  ${rating}
+                </div>
+                ${categories ? `<div class="place-categories">${categories}</div>` : ""}
+                ${address ? `<div class="muted" style="font-size:12px; margin-top: 4px">${address}</div>` : ""}
+                ${googleSearchUrl ? `<div class="place-actions" style="margin-top: 8px;"><small class="muted">Click place name for reviews & details</small></div>` : ""}
+              </div>
+            `;
+                  })
+                  .join("");
+
+                const altsHtml = (day.alternatives || [])
+                  .map((a) => {
+                    const altList = (a.alts || [])
+                      .map((x) => x?.name)
+                      .filter(Boolean)
+                      .slice(0, 2);
+                    if (!altList.length) return "";
+                    return `<div class="muted" style="font-size:12px">Alt for <em>${
+                      a.category
+                    }</em>: ${altList.join(" -  ")}</div>`;
+                  })
+                  .join("");
+
+                const dateObj = new Date(day.date);
+                const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                  weekday: 'short', 
+                  month: 'short', 
+                  day: 'numeric',
+                  year: 'numeric'
+                });
+                
+                return `
+            <div class="day-card fade-in">
+              <div class="day-card-header">
+                <h3 class="day-card-title">Day ${i + 1} - ${formattedDate}</h3>
+                <div class="day-weather">${weather}</div>
+              </div>
+              
+              <div class="day-activities">
+                ${slotsHtml}
+              </div>
+              
+              ${cats ? `<div class="day-categories" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #f3f4f6;">
+                <div style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">Experiences</div>
+                <div>${cats}</div>
+              </div>` : ""}
+              
+              ${altsHtml ? `<div class="day-alternatives" style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb;">${altsHtml}</div>` : ""}
+            </div>
+          `;
+              })
+              .join("");
+
+            if (pts.length) fitBoundsToPoints(pts);
+
+            // LLM notes
+            if (data.llm_notes) {
+              llmNotes.innerHTML = data.llm_notes
+                .replaceAll("**", "") // basic markdown cleanup
+                .replaceAll("\n\n", "<br/><br/>")
+                .replaceAll("\n", "<br/>");
+            } else {
+              llmNotes.textContent =
+                "No LLM notes. Enable the Groq option to include narrative and meal tips.";
+            }
+          } catch (err) {
+            errorEl.textContent = err.message;
+            summary.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px; color: #dc2626;">
+                <span>Error:</span>
+                <span>Failed to generate plan. Please try again.</span>
+              </div>
+            `;
+            results.innerHTML = `
+              <div class="day-card" style="border-color: #fca5a5;">
+                <div style="text-align: center; padding: 20px; color: #dc2626;">
+                  <div style="font-size: 24px; margin-bottom: 12px;">Error</div>
+                  <div>Oops! Something went wrong. Please check your inputs and try again.</div>
+                </div>
+              </div>
+            `;
+            llmNotes.innerHTML = `
+              <div style="text-align: center; padding: 20px; color: var(--muted);">
+                <div style="font-size: 24px; margin-bottom: 12px;">AI</div>
+                <div>Unable to generate travel guide. Try again or explore without AI assistance.</div>
+              </div>
+            `;
+          } finally {
+            // Reset button state
+            submitBtn.textContent = originalBtnText;
+            submitBtn.classList.remove('loading');
+          }
+        }
+
+        form?.addEventListener("submit", generatePlan);
+
+        // Logout
+        document
+          .getElementById("logout")
+          ?.addEventListener("click", async () => {
+            try {
+              await fetch("/api/logout", { method: "POST" });
+            } catch {}
+            window.location.assign("/");
+          });
+      });
+    </script>
+  </body>
+</html>

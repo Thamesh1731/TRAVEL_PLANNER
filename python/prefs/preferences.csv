@@ -1,0 +1,336 @@
+traveler_type,preferred_category,weight
+Couple,romantic,4
+Couple,scenic,3
+Couple,quiet,2
+Couple,parks,1
+Couple,lakes,3
+Couple,viewpoints,1
+Couple,gardens,2
+Couple,sunset_points,2
+Couple,cafes,1
+Couple,heritage_sites,1
+Couple,beaches,3
+Couple,mountain_views,1
+Couple,waterfalls,1
+Solo,museums,3
+Solo,hiking,3
+Solo,adventure,4
+Solo,cultural,2
+Solo,nature,3
+Solo,temples,2
+Solo,historical_monuments,1
+Solo,trekking,2
+Solo,libraries,1
+Solo,art_galleries,2
+Solo,meditation_centers,3
+Solo,mountain_views,3
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,2
+Nuclear Family,zoo,3
+Nuclear Family,parks,1
+Nuclear Family,lakes,2
+Nuclear Family,family_restaurants,3
+Nuclear Family,botanical_gardens,2
+Nuclear Family,aquariums,1
+Nuclear Family,science_centers,3
+Nuclear Family,beaches,2
+Nuclear Family,waterfalls,1
+Nuclear Family,picnic_spots,2
+Nuclear Family,shopping_malls,2
+Joint Family,sightseeing,2
+Joint Family,temples,2
+Joint Family,parks,2
+Joint Family,group_activities,2
+Joint Family,shopping,3
+Joint Family,gardens,1
+Joint Family,heritage_sites,1
+Joint Family,markets,1
+Joint Family,cultural_centers,2
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,2
+Joint Family,festivals,2
+Joint Family,city_tours,1
+Couple,romantic,2
+Couple,scenic,3
+Couple,quiet,1
+Couple,parks,1
+Couple,lakes,2
+Couple,viewpoints,2
+Couple,gardens,2
+Couple,sunset_points,4
+Couple,cafes,2
+Couple,heritage_sites,2
+Couple,beaches,3
+Couple,mountain_views,3
+Couple,waterfalls,1
+Solo,museums,3
+Solo,hiking,2
+Solo,adventure,2
+Solo,cultural,3
+Solo,nature,1
+Solo,temples,2
+Solo,historical_monuments,2
+Solo,trekking,2
+Solo,libraries,2
+Solo,art_galleries,2
+Solo,meditation_centers,2
+Solo,mountain_views,3
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,2
+Nuclear Family,zoo,1
+Nuclear Family,parks,1
+Nuclear Family,lakes,3
+Nuclear Family,family_restaurants,2
+Nuclear Family,botanical_gardens,2
+Nuclear Family,aquariums,3
+Nuclear Family,science_centers,2
+Nuclear Family,beaches,3
+Nuclear Family,waterfalls,1
+Nuclear Family,picnic_spots,4
+Nuclear Family,shopping_malls,1
+Joint Family,sightseeing,3
+Joint Family,temples,1
+Joint Family,parks,2
+Joint Family,group_activities,2
+Joint Family,shopping,2
+Joint Family,gardens,1
+Joint Family,heritage_sites,2
+Joint Family,markets,3
+Joint Family,cultural_centers,1
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,4
+Joint Family,festivals,1
+Joint Family,city_tours,1
+Couple,romantic,3
+Couple,scenic,2
+Couple,quiet,1
+Couple,parks,1
+Couple,lakes,3
+Couple,viewpoints,3
+Couple,gardens,1
+Couple,sunset_points,3
+Couple,cafes,1
+Couple,heritage_sites,1
+Couple,beaches,3
+Couple,mountain_views,2
+Couple,waterfalls,2
+Solo,museums,1
+Solo,hiking,4
+Solo,adventure,4
+Solo,cultural,2
+Solo,nature,2
+Solo,temples,1
+Solo,historical_monuments,2
+Solo,trekking,4
+Solo,libraries,1
+Solo,art_galleries,1
+Solo,meditation_centers,3
+Solo,mountain_views,1
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,3
+Nuclear Family,zoo,1
+Nuclear Family,parks,1
+Nuclear Family,lakes,2
+Nuclear Family,family_restaurants,1
+Nuclear Family,botanical_gardens,2
+Nuclear Family,aquariums,3
+Nuclear Family,science_centers,2
+Nuclear Family,beaches,3
+Nuclear Family,waterfalls,3
+Nuclear Family,picnic_spots,4
+Nuclear Family,shopping_malls,1
+Joint Family,sightseeing,3
+Joint Family,temples,2
+Joint Family,parks,1
+Joint Family,group_activities,2
+Joint Family,shopping,1
+Joint Family,gardens,1
+Joint Family,heritage_sites,2
+Joint Family,markets,3
+Joint Family,cultural_centers,1
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,4
+Joint Family,festivals,1
+Joint Family,city_tours,1
+Couple,romantic,4
+Couple,scenic,1
+Couple,quiet,1
+Couple,parks,1
+Couple,lakes,3
+Couple,viewpoints,1
+Couple,gardens,2
+Couple,sunset_points,4
+Couple,cafes,2
+Couple,heritage_sites,1
+Couple,beaches,1
+Couple,mountain_views,3
+Couple,waterfalls,3
+Solo,museums,2
+Solo,hiking,3
+Solo,adventure,4
+Solo,cultural,2
+Solo,nature,3
+Solo,temples,2
+Solo,historical_monuments,2
+Solo,trekking,2
+Solo,libraries,2
+Solo,art_galleries,2
+Solo,meditation_centers,2
+Solo,mountain_views,3
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,4
+Nuclear Family,zoo,1
+Nuclear Family,parks,1
+Nuclear Family,lakes,1
+Nuclear Family,family_restaurants,3
+Nuclear Family,botanical_gardens,2
+Nuclear Family,aquariums,1
+Nuclear Family,science_centers,2
+Nuclear Family,beaches,1
+Nuclear Family,waterfalls,3
+Nuclear Family,picnic_spots,2
+Nuclear Family,shopping_malls,1
+Joint Family,sightseeing,3
+Joint Family,temples,1
+Joint Family,parks,1
+Joint Family,group_activities,3
+Joint Family,shopping,2
+Joint Family,gardens,2
+Joint Family,heritage_sites,3
+Joint Family,markets,3
+Joint Family,cultural_centers,2
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,2
+Joint Family,festivals,1
+Joint Family,city_tours,2
+Couple,romantic,3
+Couple,scenic,3
+Couple,quiet,2
+Couple,parks,1
+Couple,lakes,3
+Couple,viewpoints,3
+Couple,gardens,2
+Couple,sunset_points,2
+Couple,cafes,3
+Couple,heritage_sites,2
+Couple,beaches,3
+Couple,mountain_views,2
+Couple,waterfalls,2
+Solo,museums,2
+Solo,hiking,4
+Solo,adventure,4
+Solo,cultural,1
+Solo,nature,2
+Solo,temples,1
+Solo,historical_monuments,1
+Solo,trekking,2
+Solo,libraries,1
+Solo,art_galleries,3
+Solo,meditation_centers,3
+Solo,mountain_views,2
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,4
+Nuclear Family,zoo,2
+Nuclear Family,parks,2
+Nuclear Family,lakes,2
+Nuclear Family,family_restaurants,2
+Nuclear Family,botanical_gardens,1
+Nuclear Family,aquariums,1
+Nuclear Family,science_centers,1
+Nuclear Family,beaches,2
+Nuclear Family,waterfalls,3
+Nuclear Family,picnic_spots,3
+Nuclear Family,shopping_malls,1
+Joint Family,sightseeing,1
+Joint Family,temples,2
+Joint Family,parks,1
+Joint Family,group_activities,3
+Joint Family,shopping,3
+Joint Family,gardens,1
+Joint Family,heritage_sites,1
+Joint Family,markets,2
+Joint Family,cultural_centers,1
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,4
+Joint Family,festivals,1
+Joint Family,city_tours,3
+Couple,romantic,4
+Couple,scenic,1
+Couple,quiet,2
+Couple,parks,1
+Couple,lakes,1
+Couple,viewpoints,2
+Couple,gardens,2
+Couple,sunset_points,2
+Couple,cafes,2
+Couple,heritage_sites,2
+Couple,beaches,2
+Couple,mountain_views,1
+Couple,waterfalls,3
+Solo,museums,2
+Solo,hiking,2
+Solo,adventure,3
+Solo,cultural,3
+Solo,nature,3
+Solo,temples,1
+Solo,historical_monuments,1
+Solo,trekking,4
+Solo,libraries,1
+Solo,art_galleries,2
+Solo,meditation_centers,2
+Solo,mountain_views,3
+Solo,waterfalls,1
+Nuclear Family,amusement_parks,2
+Nuclear Family,zoo,2
+Nuclear Family,parks,1
+Nuclear Family,lakes,2
+Nuclear Family,family_restaurants,1
+Nuclear Family,botanical_gardens,2
+Nuclear Family,aquariums,3
+Nuclear Family,science_centers,3
+Nuclear Family,beaches,3
+Nuclear Family,waterfalls,1
+Nuclear Family,picnic_spots,3
+Nuclear Family,shopping_malls,1
+Joint Family,sightseeing,2
+Joint Family,temples,3
+Joint Family,parks,2
+Joint Family,group_activities,3
+Joint Family,shopping,3
+Joint Family,gardens,1
+Joint Family,heritage_sites,2
+Joint Family,markets,1
+Joint Family,cultural_centers,2
+Joint Family,theaters,1
+Joint Family,pilgrimage_sites,2
+Joint Family,festivals,2
+Joint Family,city_tours,2
+Friends,Cafe,3
+Friends,Amusement Park,4
+Friends,Beach ,3
+Friends,Shopping Mall,3
+Friends,trekking,4
+Friends,Music Festival,3
+Friends,Road Trip,4
+Friends,Gaming Zone,3
+Friends,Wildlife Safari,5
+Friends,Art Gallery,3
+Friends,Cafe,4
+Friends,Beach,5
+Friends,Museum,3
+Friends,Shopping Mall,4
+Friends,Road Trip,3
+Friends,Trekking,4
+Friends,Amusement Park,5
+Friends,Gaming Zone,4
+Friends,Wildlife Safari,4
+Friends,Cafe,3
+Friends,Music Festival,5
+Friends,Art Gallery,4
+Friends,Beach,3
+Friends,Road Trip,4
+Friends,Shopping Mall,3
+Friends,Trekking,5
+Friends,Amusement Park,3
+Friends,Museum,4
+Friends,Wildlife Safari,5
